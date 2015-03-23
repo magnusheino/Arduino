@@ -29,6 +29,8 @@ void setup() {
     // following line sets the RTC to the date & time this sketch was compiled
     rtc.adjust(DateTime(F(__DATE__), F(__TIME__)));
   }
+
+  Serial.println("Init complete");
 }
 
 void loop() {
@@ -54,7 +56,7 @@ boolean isEvening(DateTime& datetime) {
 
 void handleLighted() {
   Serial.println("Light is on");
-  DateTime now = rtc.now();
+  DateTime now = getTime();
 
   if (!isEvening(now) && !isMorning(now)) {
     Serial.println("Time is evening and not morning");
@@ -64,6 +66,25 @@ void handleLighted() {
   }
 }
 
+DateTime getTime() {
+  DateTime now = rtc.now();
+
+  Serial.print(now.year(), DEC);
+  Serial.print('/');
+  Serial.print(now.month(), DEC);
+  Serial.print('/');
+  Serial.print(now.day(), DEC);
+  Serial.print(' ');
+  Serial.print(now.hour(), DEC);
+  Serial.print(':');
+  Serial.print(now.minute(), DEC);
+  Serial.print(':');
+  Serial.print(now.second(), DEC);
+  Serial.println();
+  
+  return now;
+}
+
 void handleNotLighted() {
   Serial.println("Light is off");
 
@@ -71,7 +92,7 @@ void handleNotLighted() {
 
   if (photocellReading < 500) {
     Serial.println("It's dark");
-    DateTime now = rtc.now();
+    DateTime now = getTime();
 
     if (isMorning(now) || isEvening(now)) {
       Serial.println("Time is morning or evening");
