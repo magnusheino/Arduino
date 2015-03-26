@@ -26,8 +26,12 @@ EthernetClient client;
 void setup() {
   Serial.begin(9600);
 
+  Serial.println("Setup Wire communication");
+
   Wire.begin(4);                // join i2c bus with address #4
   Wire.onReceive(receiveEvent); // register event
+
+  Serial.println("Wire communication setup");
 
   //  // start the Ethernet connection:
   //  if (Ethernet.begin(mac) == 0) {
@@ -47,9 +51,13 @@ void setup() {
 }
 
 void receiveEvent(int howMany) {
+  Serial.println("Received event");
+  Serial.println(howMany);
+
   String result = String();
   while (Wire.available()) {
-    char readStr = Wire.read();    
+    char readStr = Wire.read();
+    Serial.println("read");
     result = result + String(readStr);
   }
   Serial.println(result.c_str());

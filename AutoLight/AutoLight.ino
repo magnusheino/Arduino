@@ -57,6 +57,8 @@ boolean isEvening(DateTime& datetime) {
 void handleLighted() {
   Serial.println("Light is on");
   DateTime now = getTime();
+  
+  getLight();
 
   if (!isEvening(now) && !isMorning(now)) {
     Serial.println("Time is evening and not morning");
@@ -85,12 +87,18 @@ DateTime getTime() {
   return now;
 }
 
+int getLight() {
+  int light = analogRead(photocellPin);
+  Serial.println(light);
+  return light;
+}
+
 void handleNotLighted() {
   Serial.println("Light is off");
 
-  photocellReading = analogRead(photocellPin);
+  photocellReading = getLight();
 
-  if (photocellReading < 500) {
+  if (photocellReading > 800) {
     Serial.println("It's dark");
     DateTime now = getTime();
 

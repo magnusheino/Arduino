@@ -43,11 +43,25 @@ void loop() {
       Serial.print(from, HEX);
       Serial.print(": ");
       Serial.println(buf);
-      
-      String sendStr = String(buf);
-      
+
+      switch (from) {
+        case 0x1:
+          Serial.println("SOVRUM");
+          break;
+
+        default:
+          Serial.print("Received event from unknown source: ");
+          Serial.print(from, HEX);
+      }
+
+      String result = String(buf);
+      Serial.println(result);
+      Serial.println(buf);
+
+      String sendStr = result + ":SOVRUM";
+
       Wire.beginTransmission(4);
-      Wire.write(sendStr.c_str()); 
+      Wire.write(sendStr.c_str());
       Wire.endTransmission();
     }
   }
